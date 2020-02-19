@@ -2,16 +2,21 @@ package com.luvina.democalendar.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -33,19 +38,24 @@ import com.luvina.democalendar.receiver.NotificationReceiver;
 import com.luvina.democalendar.utils.Common;
 import com.luvina.democalendar.utils.Constant;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
  * Class handling Add event screen
  */
-public class AddEventActivity extends AppCompatActivity {
+public class AddEventActivity extends AppCompatActivity implements View.OnClickListener {
     // Request code for camera
     private static final int REQUEST_CODE_CAPTURE = 0;
     // Request code for gallery
     private static final int REQUEST_CODE_PICK = 1;
     private static final String TAG = "AddEventActivity";
+    private static final int REQUEST_WRITE_PERMISSION = 100;
     // Action: add/edit or detail
     private static String action = "";
     // Declare view controls of the activity
@@ -75,10 +85,12 @@ public class AddEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
         initView();
+        requestWritePermission();
         getValueSpinner();
         addEvents();
         getDefaultValue();
     }
+
 
     /**
      * Handle action pick image from camera or gallery
@@ -114,6 +126,58 @@ public class AddEventActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         } catch (FileNotFoundException e) {
             Log.d(TAG, getClass().getName() + " onActivityResult" + e.getMessage());
+        }
+    }
+
+    /**
+     * Handle action click for each button
+     *
+     * @param v: View
+     * @author HoangNN
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            // If the user clicks button cancel
+            case R.id.btnCancel:
+                onBackPressed();
+                break;
+            // If the user clicks button Add event
+            case R.id.btnAddEdit:
+                EventModel event = new EventModel();
+                event.setName(editTitle.getText().toString().trim());
+                event.setStartDate(Common.convertToDateTimeStr(editStartDate.getText().toString() + " " + spinnerStartHour.getSelectedItemPosition() + ":" + spinnerStartMinute.getSelectedItemPosition()));
+                event.setEndDate(Common.convertToDateTimeStr(editEndDate.getText().toString() + " " + spinnerEndHour.getSelectedItemPosition() + ":" + spinnerEndMinute.getSelectedItemPosition()));
+                // Validate the input data from user
+                List<String> listError = eventLogic.validate(event);
+                // If invalid
+                if (!listError.isEmpty()) {
+                    Toast.makeText(AddEventActivity.this, "Error: " + listError.get(0), Toast.LENGTH_SHORT).show();
+                    // If valid
+                } else {
+                    // Case Add
+                    if (Constant.ADD.equals(action)) {
+                        // Call createEvent()
+                        createEvent(event);
+                        // Case Edit
+                    } else if (Constant.EDIT.equals(action)) {
+                        // Call updateEvent()
+                        updateEvent(event);
+                    }
+                }
+                break;
+            default:
+                //DO NOTHING
+                break;
+        }
+    }
+
+    private void requestWritePermission() {
+        boolean isNotGranted = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
+        if (isNotGranted) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
+            }
         }
     }
 
@@ -162,18 +226,14 @@ public class AddEventActivity extends AppCompatActivity {
                 break;
             // Case Edit, Detail: click a particular item on list view from Home screen
             case Constant.EDIT:
-            case Constant.DETAIL:
-                // Call fillData()
                 fillData();
-                // Case edit
-                if (Constant.EDIT.equals(action)) {
-                    btnAddEdit.setText("Update Event");
-                    title.setText("Edit Event");
-                    // Case detail
-                } else if (Constant.DETAIL.equals(action)) {
-                    btnAddEdit.setVisibility(View.INVISIBLE);
-                    title.setText("Detail");
-                }
+                btnAddEdit.setText("Update Event");
+                title.setText("Edit Event");
+                break;
+            case Constant.DETAIL:
+                fillData();
+                btnAddEdit.setVisibility(View.INVISIBLE);
+                title.setText("Detail");
                 break;
             default:
                 //DO NOTHING
@@ -196,18 +256,17 @@ public class AddEventActivity extends AppCompatActivity {
         editTitle.setText(event.getName());
         String startDate = event.getStartDate();
         String endDate = event.getEndDate();
-        spinnerStartHour.setSelection(Common.convertToHour(startDate));
-        spinnerStartMinute.setSelection(Common.convertToMinute(startDate));
+        spinnerStartHour.setSelection(Common.getHourFromDate(startDate));
+        spinnerStartMinute.setSelection(Common.getMinuteFromDate(startDate));
         editStartDate.setText(Common.convertToDate(startDate));
-        spinnerEndHour.setSelection(Common.convertToHour(endDate));
-        spinnerEndMinute.setSelection(Common.convertToMinute(endDate));
+        spinnerEndHour.setSelection(Common.getHourFromDate(endDate));
+        spinnerEndMinute.setSelection(Common.getMinuteFromDate(endDate));
         editEndDate.setText(Common.convertToDate(endDate));
         switchNotify.setChecked(Common.getNotifyBoolean(event.getNotify()));
         editNote.setText(event.getNote());
-        // Decode byte[] -> bitmap
-        byte[] image = event.getImage();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-        imageChoose.setImageBitmap(bitmap);
+        // Display imageView
+        Uri savedImageURI = Uri.parse(event.getImage());
+        imageChoose.setImageURI(savedImageURI);
     }
 
     /**
@@ -300,58 +359,9 @@ public class AddEventActivity extends AppCompatActivity {
      * @author HoangNN
      */
     private void addButtonEvent() {
-        // Initialize object OnClickListener
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doButton(v);
-            }
-        };
         // setOnClickListener for each button
-        btnCancel.setOnClickListener(onClickListener);
-        btnAddEdit.setOnClickListener(onClickListener);
-    }
-
-    /**
-     * Handle action click for each button
-     *
-     * @param v: View
-     * @author HoangNN
-     */
-    private void doButton(View v) {
-        switch (v.getId()) {
-            // If the user clicks button cancel
-            case R.id.btnCancel:
-                onBackPressed();
-                break;
-            // If the user clicks button Add event
-            case R.id.btnAddEdit:
-                EventModel event = new EventModel();
-                event.setName(editTitle.getText().toString().trim());
-                event.setStartDate(Common.convertToDateTimeStr(editStartDate.getText().toString() + " " + spinnerStartHour.getSelectedItemPosition() + ":" + spinnerStartMinute.getSelectedItemPosition()));
-                event.setEndDate(Common.convertToDateTimeStr(editEndDate.getText().toString() + " " + spinnerEndHour.getSelectedItemPosition() + ":" + spinnerEndMinute.getSelectedItemPosition()));
-                // Validate the input data from user
-                List<String> listError = eventLogic.validate(event);
-                // If invalid
-                if (!listError.isEmpty()) {
-                    Toast.makeText(AddEventActivity.this, "Error: " + listError.get(0), Toast.LENGTH_SHORT).show();
-                    // If valid
-                } else {
-                    // Case Add
-                    if (Constant.ADD.equals(action)) {
-                        // Call createEvent()
-                        createEvent(event);
-                        // Case Edit
-                    } else if (Constant.EDIT.equals(action)) {
-                        // Call updateEvent()
-                        updateEvent(event);
-                    }
-                }
-                break;
-            default:
-                //DO NOTHING
-                break;
-        }
+        btnCancel.setOnClickListener(this);
+        btnAddEdit.setOnClickListener(this);
     }
 
     /**
@@ -387,9 +397,7 @@ public class AddEventActivity extends AppCompatActivity {
                     event.setEndDate(Common.convertToDateTimeStr(editEndDate.getText().toString() + " " + spinnerEndHour.getSelectedItemPosition() + ":" + spinnerEndMinute.getSelectedItemPosition()));
                     event.setNote(editNote.getText().toString());
                     event.setNotify(Common.getNotifyInt(switchNotify.isChecked()));
-                    // Convert imageview -> byte[]
-                    byte[] image = Common.convertToImageByteArray((BitmapDrawable) imageChoose.getDrawable());
-                    event.setImage(image);
+                    saveImageToFile(event);
                     // Update event to DB
                     boolean isSucceeded = HomeFragment.eventDao.updateEvent(event);
                     // If succeeded
@@ -407,12 +415,7 @@ public class AddEventActivity extends AppCompatActivity {
                 }
             });
             // setNegativeButton
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            builder.setNegativeButton("No", null);
             builder.create().show();
         }
     }
@@ -426,9 +429,7 @@ public class AddEventActivity extends AppCompatActivity {
     private void updateEventToDatabase(EventModel event) {
         event.setNote(editNote.getText().toString());
         event.setNotify(Common.getNotifyInt(switchNotify.isChecked()));
-        // Convert imageview -> byte[]
-        byte[] image = Common.convertToImageByteArray((BitmapDrawable) imageChoose.getDrawable());
-        event.setImage(image);
+        saveImageToFile(event);
         // Update event to DB
         boolean isSucceeded = HomeFragment.eventDao.updateEvent(event);
         // If succeeded
@@ -501,9 +502,7 @@ public class AddEventActivity extends AppCompatActivity {
                     event.setEndDate(Common.convertToDateTimeStr(editEndDate.getText().toString() + " " + spinnerEndHour.getSelectedItemPosition() + ":" + spinnerEndMinute.getSelectedItemPosition()));
                     event.setNote(editNote.getText().toString());
                     event.setNotify(Common.getNotifyInt(switchNotify.isChecked()));
-                    // Convert imageview -> byte[]
-                    byte[] image = Common.convertToImageByteArray((BitmapDrawable) imageChoose.getDrawable());
-                    event.setImage(image);
+                    saveImageToFile(event);
                     // Add event to database
                     int id = HomeFragment.eventDao.addEvent(event);
                     // If id > 0
@@ -524,12 +523,7 @@ public class AddEventActivity extends AppCompatActivity {
                 }
             });
             // setNegativeButton
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            builder.setNegativeButton("No", null);
             builder.create().show();
         }
     }
@@ -543,9 +537,8 @@ public class AddEventActivity extends AppCompatActivity {
     private void addEventToDatabase(EventModel event) {
         event.setNote(editNote.getText().toString());
         event.setNotify(Common.getNotifyInt(switchNotify.isChecked()));
-        // Convert imageview -> byte[]
-        byte[] image = Common.convertToImageByteArray((BitmapDrawable) imageChoose.getDrawable());
-        event.setImage(image);
+        // Create a file to save the image
+        saveImageToFile(event);
         // Add event to database
         int id = HomeFragment.eventDao.addEvent(event);
         // If id > 0
@@ -563,6 +556,20 @@ public class AddEventActivity extends AppCompatActivity {
         // Change the activity to Main activity
         startActivity(new Intent(AddEventActivity.this, MainActivity.class));
         finish();
+    }
+
+    private void saveImageToFile(EventModel event) {
+        String path = Environment.getExternalStorageDirectory().toString();
+        File file = new File(path, System.currentTimeMillis() + ".png");
+        event.setImage(file.getAbsolutePath());
+        Bitmap bitmap = ((BitmapDrawable) imageChoose.getDrawable()).getBitmap();
+        try {
+            OutputStream outputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -628,4 +635,5 @@ public class AddEventActivity extends AppCompatActivity {
         switchNotify = findViewById(R.id.notify);
         eventLogic = new EventLogic();
     }
+
 }

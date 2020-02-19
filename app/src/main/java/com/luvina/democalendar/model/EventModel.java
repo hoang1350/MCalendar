@@ -10,7 +10,7 @@ public class EventModel implements Parcelable {
     // Declare all attributes of an event
     private int id, notify;
     private String name, note, startDate, endDate;
-    private byte[] image;
+    private String image;
 
     public EventModel() {
 
@@ -23,7 +23,7 @@ public class EventModel implements Parcelable {
         note = in.readString();
         startDate = in.readString();
         endDate = in.readString();
-        image = in.createByteArray();
+        image = in.readString();
     }
 
     public static final Creator<EventModel> CREATOR = new Creator<EventModel>() {
@@ -38,28 +38,20 @@ public class EventModel implements Parcelable {
         }
     };
 
-    public int getNotify() {
-        return notify;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setNotify(int notify) {
-        this.notify = notify;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(notify);
+        dest.writeString(name);
+        dest.writeString(note);
+        dest.writeString(startDate);
+        dest.writeString(endDate);
+        dest.writeString(image);
     }
 
     public int getId() {
@@ -70,12 +62,28 @@ public class EventModel implements Parcelable {
         this.id = id;
     }
 
+    public int getNotify() {
+        return notify;
+    }
+
+    public void setNotify(int notify) {
+        this.notify = notify;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getStartDate() {
@@ -94,19 +102,11 @@ public class EventModel implements Parcelable {
         this.endDate = endDate;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getImage() {
+        return image;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeInt(notify);
-        dest.writeString(name);
-        dest.writeString(note);
-        dest.writeString(startDate);
-        dest.writeString(endDate);
-        dest.writeByteArray(image);
+    public void setImage(String image) {
+        this.image = image;
     }
 }

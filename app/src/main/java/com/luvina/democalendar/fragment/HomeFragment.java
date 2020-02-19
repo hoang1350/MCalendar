@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * Class handling Home screen
  */
-public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnItemClickedListener {
+public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnItemClickedListener, View.OnClickListener {
     // Declare the object to access to DB
     public static EventDao eventDao;
     private View view;
@@ -93,6 +93,30 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
     }
 
     /**
+     * Handle action click for each button
+     *
+     * @param v: object View
+     * @author HoangNN
+     */
+    @Override
+    public void onClick(View v) {
+        // Check which button the user clicks
+        switch (v.getId()) {
+            // If the user clicks button Today
+            case R.id.btnToday:
+                actionToday();
+                break;
+            // If the user clicks button Add event
+            case R.id.btnAdd:
+                actionAddEvent();
+                break;
+            default:
+                //DO NOTHING
+                break;
+        }
+    }
+
+    /**
      * Initialize controls and objects
      *
      * @author HoangNN
@@ -108,11 +132,11 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
         recyclerView.setAdapter(eventRecyclerAdapter);
 
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerView.getContext(),GridLayoutManager.HORIZONTAL);
-        DividerItemDecoration dividerItemDecoration2 = new DividerItemDecoration(recyclerView.getContext(),GridLayoutManager.VERTICAL);
+        DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerView.getContext(), GridLayoutManager.HORIZONTAL);
+        DividerItemDecoration dividerItemDecoration2 = new DividerItemDecoration(recyclerView.getContext(), GridLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration1);
         recyclerView.addItemDecoration(dividerItemDecoration2);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
     }
 
@@ -155,39 +179,9 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
      * @author HoangNN
      */
     private void addButtonEvent() {
-        // Initialize object OnClickListener
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doButton(v);
-            }
-        };
         // setOnClickListener for each button
-        btnToday.setOnClickListener(onClickListener);
-        btnAdd.setOnClickListener(onClickListener);
-    }
-
-    /**
-     * Handle action click for each button
-     *
-     * @param v: object View
-     * @author HoangNN
-     */
-    private void doButton(View v) {
-        // Check which button the user clicks
-        switch (v.getId()) {
-            // If the user clicks button Today
-            case R.id.btnToday:
-                actionToday();
-                break;
-            // If the user clicks button Add event
-            case R.id.btnAdd:
-                actionAddEvent();
-                break;
-            default:
-                //DO NOTHING
-                break;
-        }
+        btnToday.setOnClickListener(this);
+        btnAdd.setOnClickListener(this);
     }
 
     /**

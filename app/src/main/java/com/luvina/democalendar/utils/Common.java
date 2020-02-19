@@ -38,7 +38,7 @@ public class Common {
      * @return: a String format: HH:mm
      * @author HoangNN
      */
-    public static String convertToTime(String dateTimeStr) {
+    public static String getTimeFromDate(String dateTimeStr) {
         String[] arrDateTime = dateTimeStr.split(" ");
         return arrDateTime[1];
     }
@@ -254,7 +254,7 @@ public class Common {
      * @return: hour
      * @author HoangNN
      */
-    public static int convertToHour(String dateTimeStr) {
+    public static int getHourFromDate(String dateTimeStr) {
         String[] arrDateStr = dateTimeStr.split(" ");
         String[] arrHourMinute = arrDateStr[1].split(":");
         return Integer.parseInt(arrHourMinute[0]);
@@ -267,7 +267,7 @@ public class Common {
      * @return: minute
      * @author HoangNN
      */
-    public static int convertToMinute(String dateTimeStr) {
+    public static int getMinuteFromDate(String dateTimeStr) {
         String[] arrDateStr = dateTimeStr.split(" ");
         String[] arrHourMinute = arrDateStr[1].split(":");
         return Integer.parseInt(arrHourMinute[1]);
@@ -304,18 +304,4 @@ public class Common {
         return timeInMillis;
     }
 
-    /**
-     * Convert drawable -> byte[]
-     *
-     * @param drawable: object BitmapDrawable
-     * @return: byteArray after convert
-     * @author HoangNN
-     */
-    public static byte[] convertToImageByteArray(BitmapDrawable drawable) {
-        Bitmap bitmap = drawable.getBitmap();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] image = byteArrayOutputStream.toByteArray();
-        return image;
-    }
 }

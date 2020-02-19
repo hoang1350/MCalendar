@@ -19,7 +19,7 @@ import com.luvina.democalendar.activity.AppDescriptionActivity;
 /**
  * Class handling About screen
  */
-public class AboutFragment extends Fragment {
+public class AboutFragment extends Fragment implements View.OnClickListener {
     // Declare view controls of the fragment
     private View view;
     private Button btnExport, btnAbout;
@@ -43,40 +43,13 @@ public class AboutFragment extends Fragment {
     }
 
     /**
-     * Initialize controls and objects
-     *
-     * @author HoangNN
-     */
-    private void initView() {
-        btnExport = view.findViewById(R.id.btnExport);
-        btnAbout = view.findViewById(R.id.btnDescription);
-    }
-
-    /**
-     * setOnClickListener for buttons
-     *
-     * @author HoangNN
-     */
-    private void addButtonEvent() {
-        // Initialize object OnClickListener
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doButton(v);
-            }
-        };
-        // setOnClickListener for each button
-        btnExport.setOnClickListener(onClickListener);
-        btnAbout.setOnClickListener(onClickListener);
-    }
-
-    /**
      * Handle action click for each button
      *
      * @param v: object View
      * @author HoangNN
      */
-    private void doButton(View v) {
+    @Override
+    public void onClick(View v) {
         // Check which button the user clicks
         switch (v.getId()) {
             // If the user clicks button Export
@@ -94,5 +67,26 @@ public class AboutFragment extends Fragment {
                 //DO NOTHING
                 break;
         }
+    }
+
+    /**
+     * Initialize controls and objects
+     *
+     * @author HoangNN
+     */
+    private void initView() {
+        btnExport = view.findViewById(R.id.btnExport);
+        btnAbout = view.findViewById(R.id.btnDescription);
+    }
+
+    /**
+     * setOnClickListener for buttons
+     *
+     * @author HoangNN
+     */
+    private void addButtonEvent() {
+        // setOnClickListener for each button
+        btnExport.setOnClickListener(this);
+        btnAbout.setOnClickListener(this);
     }
 }

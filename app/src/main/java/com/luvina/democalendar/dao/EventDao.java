@@ -46,7 +46,7 @@ public class EventDao extends SQLiteOpenHelper {
             StringBuilder sql = new StringBuilder();
             sql.append("CREATE TABLE event");
             sql.append(" (id INTEGER PRIMARY KEY AUTOINCREMENT, ");
-            sql.append("name TEXT, start_date DATETIME, end_date DATETIME, note TEXT, image BLOB, notify INTEGER)");
+            sql.append("name TEXT, start_date DATETIME, end_date DATETIME, note TEXT, image TEXT, notify INTEGER)");
             db.execSQL(sql.toString());
         } catch (SQLException e) {
             Log.d(TAG, getClass().getName() + " onCreate" + e.getMessage());
@@ -80,7 +80,7 @@ public class EventDao extends SQLiteOpenHelper {
             sqLiteStatement.bindString(index++, event.getStartDate());
             sqLiteStatement.bindString(index++, event.getEndDate());
             sqLiteStatement.bindString(index++, event.getNote());
-            sqLiteStatement.bindBlob(index++, event.getImage());
+            sqLiteStatement.bindString(index++, event.getImage());
             sqLiteStatement.bindLong(index++, event.getNotify());
             // executeInsert
             rowId = (int) sqLiteStatement.executeInsert();
@@ -114,7 +114,7 @@ public class EventDao extends SQLiteOpenHelper {
             sqLiteStatement.bindString(index++, event.getStartDate());
             sqLiteStatement.bindString(index++, event.getEndDate());
             sqLiteStatement.bindString(index++, event.getNote());
-            sqLiteStatement.bindBlob(index++, event.getImage());
+            sqLiteStatement.bindString(index++, event.getImage());
             sqLiteStatement.bindLong(index++, event.getNotify());
             sqLiteStatement.bindLong(index++, event.getId());
             // executeUpdate
@@ -148,7 +148,7 @@ public class EventDao extends SQLiteOpenHelper {
             event.setName(cursor.getString(cursor.getColumnIndex("name")));
             event.setStartDate(cursor.getString(cursor.getColumnIndex("start_date")));
             event.setEndDate(cursor.getString(cursor.getColumnIndex("end_date")));
-            event.setImage(cursor.getBlob(cursor.getColumnIndex("image")));
+            event.setImage(cursor.getString(cursor.getColumnIndex("image")));
             event.setNote(cursor.getString(cursor.getColumnIndex("note")));
             event.setNotify(cursor.getInt(cursor.getColumnIndex("notify")));
             listEvent.add(event);
@@ -188,7 +188,7 @@ public class EventDao extends SQLiteOpenHelper {
             event.setName(cursor.getString(cursor.getColumnIndex("name")));
             event.setStartDate(cursor.getString(cursor.getColumnIndex("start_date")));
             event.setEndDate(cursor.getString(cursor.getColumnIndex("end_date")));
-            event.setImage(cursor.getBlob(cursor.getColumnIndex("image")));
+            event.setImage(cursor.getString(cursor.getColumnIndex("image")));
             event.setNote(cursor.getString(cursor.getColumnIndex("note")));
             event.setNotify(cursor.getInt(cursor.getColumnIndex("notify")));
             listEvent.add(event);

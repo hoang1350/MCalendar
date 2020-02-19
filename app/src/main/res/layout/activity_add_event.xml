@@ -20,13 +20,13 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
             android:textAllCaps="false"
-            android:text="Cancel" />
+            android:text="@string/cancel" />
 
         <TextView
             android:id="@+id/titleContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Event"
+            android:text="@string/new_event"
             android:layout_centerInParent="true"
             android:textColor="@color/colorWhite"
             android:textSize="20sp" />
@@ -39,125 +39,176 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:textAllCaps="false"
-            android:text="+Add event" />
+            android:text="@string/add_event" />
     </RelativeLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintTitle"
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/margin_10dp"
-            android:text="Title"
-            android:textSize="@dimen/text_size_15" />
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/title"
+            android:textSize="@dimen/text_size_15"
+            app:layout_constraintEnd_toStartOf="@+id/editTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/editTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/border"
             android:hint="Play games"
             android:paddingLeft="5dp"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="20dp"
             android:maxLines="1"
-            android:background="@drawable/border" />
-    </LinearLayout>
+            android:minWidth="220dp"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="150dp">
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_10dp"
-            android:text="Location"
-            android:textSize="@dimen/text_size_15" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="22dp"
+            android:text="@string/location"
+            android:textSize="@dimen/text_size_15"
+            app:layout_constraintEnd_toStartOf="@+id/myMap"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <fragment
             android:id="@+id/myMap"
             android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="250dp"
-            android:layout_height="150dp"
-            android:layout_marginLeft="20dp" />
-    </LinearLayout>
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:minHeight="150dp"
+            android:layout_marginStart="22dp"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginTop="8dp">
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginStart="5dp"
             android:text="Start"
-            android:textSize="@dimen/text_size_15" />
+            android:textSize="@dimen/text_size_15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
             android:id="@+id/startHour"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
+            android:minWidth="80dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="5dp" />
-
-        <Spinner
-            android:id="@+id/startMinute"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="4dp" />
+            android:layout_marginStart="46dp"
+            app:layout_constraintEnd_toStartOf="@+id/startMinute"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/startDate"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginStart="0dp"
             android:background="@drawable/border"
             android:enabled="false"
             android:paddingLeft="4dp"
-            android:textColor="@drawable/text_disable" />
+            android:textColor="@drawable/text_disable"
+            app:layout_constraintEnd_toStartOf="@+id/calendarStart"
+            app:layout_constraintStart_toEndOf="@+id/startMinute"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/calendarStart"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/border"
-            android:src="@drawable/calendar" />
-    </LinearLayout>
+            android:src="@drawable/calendar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/startDate"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+        <Spinner
+            android:id="@+id/startMinute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:minWidth="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/startDate"
+            app:layout_constraintStart_toEndOf="@+id/startHour"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginTop="0dp">
 
         <TextView
+            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
             android:text="End"
-            android:textSize="@dimen/text_size_15" />
+            android:textSize="@dimen/text_size_15"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
             android:id="@+id/endHour"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="12dp" />
+            android:layout_marginStart="46dp"
+            android:minWidth="80dp"
+            app:layout_constraintEnd_toStartOf="@+id/endMinute"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
             android:id="@+id/endMinute"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="4dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="15dp"
+            android:minWidth="80dp"
+            app:layout_constraintEnd_toStartOf="@+id/endDate"
+            app:layout_constraintStart_toEndOf="@+id/endHour"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/endDate"
@@ -167,16 +218,23 @@
             android:background="@drawable/border"
             android:enabled="false"
             android:paddingLeft="4dp"
-            android:textColor="@drawable/text_disable" />
+            android:textColor="@drawable/text_disable"
+            app:layout_constraintEnd_toStartOf="@+id/calendarEnd"
+            app:layout_constraintStart_toEndOf="@+id/endMinute"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/calendarEnd"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/border"
-            android:src="@drawable/calendar" />
-    </LinearLayout>
+            android:src="@drawable/calendar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/endDate"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -187,15 +245,20 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/margin_10dp"
-            android:text="Alert notification"
+            android:text="@string/alert_notification"
             android:textSize="@dimen/text_size_15" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
         <Switch
             android:id="@+id/notify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="220dp"
+            android:layout_marginRight="10dp"
             android:checked="true"
             android:theme="@style/Switch" />
 
@@ -208,9 +271,10 @@
 
         <TextView
             android:layout_width="wrap_content"
+            android:maxWidth="40dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/margin_10dp"
-            android:text="Note"
+            android:text="@string/note"
             android:textSize="@dimen/text_size_15" />
 
         <EditText

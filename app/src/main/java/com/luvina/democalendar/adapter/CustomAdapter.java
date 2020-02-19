@@ -70,8 +70,8 @@ public class CustomAdapter extends ArrayAdapter<EventModel> {
         // Set value for each attribute of view holder
         EventModel event = listEvent.get(position);
         viewHolder.eventName.setText(event.getName());
-        viewHolder.startTime.setText(Common.convertToTime(event.getStartDate()));
-        viewHolder.endTime.setText(Common.convertToTime(event.getEndDate()));
+        viewHolder.startTime.setText(Common.getTimeFromDate(event.getStartDate()));
+        viewHolder.endTime.setText(Common.getTimeFromDate(event.getEndDate()));
         return convertView;
     }
 
