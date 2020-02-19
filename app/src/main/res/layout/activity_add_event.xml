@@ -132,9 +132,8 @@
         <EditText
             android:id="@+id/startDate"
             android:layout_width="110dp"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_gravity="center"
-            android:layout_marginStart="0dp"
             android:background="@drawable/border"
             android:enabled="false"
             android:paddingLeft="4dp"
@@ -146,7 +145,7 @@
         <ImageView
             android:id="@+id/calendarStart"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_gravity="center"
             android:layout_marginEnd="5dp"
             android:background="@drawable/border"
@@ -213,7 +212,7 @@
         <EditText
             android:id="@+id/endDate"
             android:layout_width="110dp"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_gravity="center"
             android:background="@drawable/border"
             android:enabled="false"
@@ -226,7 +225,7 @@
         <ImageView
             android:id="@+id/calendarEnd"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_gravity="center"
             android:layout_marginEnd="5dp"
             android:background="@drawable/border"
