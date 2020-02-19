@@ -1,43 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
     <TextView
+        android:id="@+id/eventName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:maxLength="14"
-        android:id="@+id/eventName"
         android:padding="5dp"
-        android:textSize="@dimen/text_size_20"
         android:text="Event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:textSize="@dimen/text_size_20" />
+
     <TextView
         android:id="@+id/start"
-        android:padding="5dp"
-        android:textSize="@dimen/text_size_20"
-        android:text="start:"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="start:"
+        android:textSize="@dimen/text_size_20" />
+
     <TextView
         android:id="@+id/startTime"
-        android:padding="5dp"
-        android:textSize="@dimen/text_size_20"
-        android:text="startTime"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="startTime"
+        android:textSize="@dimen/text_size_20" />
+
     <TextView
         android:id="@+id/end"
-        android:padding="5dp"
-        android:textSize="@dimen/text_size_20"
-        android:text="end:"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="end:"
+        android:textSize="@dimen/text_size_20" />
+
     <TextView
         android:id="@+id/endTime"
-        android:padding="5dp"
-        android:textSize="@dimen/text_size_20"
-        android:text="endTime"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="endTime"
+        android:textSize="@dimen/text_size_20" />
 </LinearLayout>

@@ -12,10 +12,15 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.luvina.democalendar.R;
 import com.luvina.democalendar.activity.AddEventActivity;
 import com.luvina.democalendar.adapter.CustomAdapter;
+import com.luvina.democalendar.adapter.EventRecyclerAdapter;
 import com.luvina.democalendar.dao.EventDao;
 import com.luvina.democalendar.model.EventModel;
 import com.luvina.democalendar.utils.Common;
@@ -33,13 +38,13 @@ import java.util.List;
 /**
  * Class handling Home screen
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnItemClickedListener {
     // Declare the object to access to DB
     public static EventDao eventDao;
     private View view;
     // Declare view controls of the fragment
-    private ListView listViewEvent;
-    private CustomAdapter customAdapter;
+    private EventRecyclerAdapter eventRecyclerAdapter;
+    private RecyclerView recyclerView;
     private MaterialCalendarView calendarView;
     private Button btnToday, btnAdd;
     // Declare list event
@@ -66,6 +71,27 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onItemClicked(int position) {
+        // Get the recent selected item
+        EventModel event = listEvent.get(position);
+        // Initialize an intent
+        Intent intent = new Intent(getActivity(), AddEventActivity.class);
+        // Put selected event on intent
+        intent.putExtra(Constant.EVENT, event);
+        // If the event already occurs
+        if (!Common.compareToCurrentTime(event.getStartDate())) {
+            // Set action detail on intent
+            intent.putExtra(Constant.ACTION, Constant.DETAIL);
+            // If the event hasn't occurred
+        } else {
+            // Set action edit on intent
+            intent.putExtra(Constant.ACTION, Constant.EDIT);
+        }
+        // Change the screen to AddEventActivity
+        startActivity(intent);
+    }
+
     /**
      * Initialize controls and objects
      *
@@ -75,10 +101,19 @@ public class HomeFragment extends Fragment {
         btnToday = view.findViewById(R.id.btnToday);
         btnAdd = view.findViewById(R.id.btnAdd);
         calendarView = view.findViewById(R.id.calendarView);
-        listViewEvent = view.findViewById(R.id.listEvent);
+        recyclerView = view.findViewById(R.id.recyclerView);
         eventDao = new EventDao(getActivity());
         listEvent = new ArrayList<>();
-        customAdapter = new CustomAdapter(getActivity(), R.layout.listview_event, listEvent);
+        eventRecyclerAdapter = new EventRecyclerAdapter(this, listEvent);
+        recyclerView.setAdapter(eventRecyclerAdapter);
+
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerView.getContext(),GridLayoutManager.HORIZONTAL);
+        DividerItemDecoration dividerItemDecoration2 = new DividerItemDecoration(recyclerView.getContext(),GridLayoutManager.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration1);
+        recyclerView.addItemDecoration(dividerItemDecoration2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
+        recyclerView.setLayoutManager(gridLayoutManager);
     }
 
     /**
@@ -93,8 +128,13 @@ public class HomeFragment extends Fragment {
         // Get list event from Database
         listEvent = eventDao.getListEvent(dateStr);
         // Display on list view
-        customAdapter = new CustomAdapter(getActivity(), R.layout.listview_event, listEvent);
-        listViewEvent.setAdapter(customAdapter);
+        if (eventRecyclerAdapter == null) {
+            eventRecyclerAdapter = new EventRecyclerAdapter(this, listEvent);
+            recyclerView.setAdapter(eventRecyclerAdapter);
+        } else {
+            eventRecyclerAdapter.setListEvent(listEvent);
+            eventRecyclerAdapter.notifyDataSetChanged();
+        }
     }
 
     /**
@@ -107,38 +147,6 @@ public class HomeFragment extends Fragment {
         addCalendarViewEvent();
         // Add event for buttons
         addButtonEvent();
-        // Add events for list view
-        addListViewEvent();
-    }
-
-    /**
-     * Set setOnItemClickListener for list view
-     *
-     * @author HoangNN
-     */
-    private void addListViewEvent() {
-        listViewEvent.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the recent selected item
-                EventModel event = listEvent.get(position);
-                // Initialize an intent
-                Intent intent = new Intent(getActivity(), AddEventActivity.class);
-                // Put selected event on intent
-                intent.putExtra(Constant.EVENT, event);
-                // If the event already occurs
-                if (!Common.compareToCurrentTime(event.getStartDate())) {
-                    // Set action detail on intent
-                    intent.putExtra(Constant.ACTION, Constant.DETAIL);
-                    // If the event hasn't occurred
-                } else {
-                    // Set action edit on intent
-                    intent.putExtra(Constant.ACTION, Constant.EDIT);
-                }
-                // Change the screen to AddEventActivity
-                startActivity(intent);
-            }
-        });
     }
 
     /**
@@ -232,7 +240,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     // Clear list view
                     listEvent.clear();
-                    customAdapter.notifyDataSetChanged();
+                    eventRecyclerAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -245,4 +253,5 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
 }

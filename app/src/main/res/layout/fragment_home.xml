@@ -20,8 +20,8 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:textAllCaps="false"
-            android:text="Today" />
+            android:text="Today"
+            android:textAllCaps="false" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -40,8 +40,8 @@
             android:layout_gravity="center"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:textAllCaps="false"
-            android:text="+Add event" />
+            android:text="+Add event"
+            android:textAllCaps="false" />
     </LinearLayout>
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
@@ -52,12 +52,10 @@
         app:mcv_selectionColor="#615253"
         app:mcv_tileHeight="35dp" />
 
-    <ListView
-        android:id="@+id/listEvent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/listview_border"
-        android:divider="@color/colorBlack"
-        android:dividerHeight="1dp" />
+        android:background="@drawable/listview_border"/>
 </LinearLayout>

@@ -20,6 +20,7 @@ import com.luvina.democalendar.fragment.HomeFragment;
 public class MainActivity extends AppCompatActivity {
     // Bottom navigation of the activity
     private BottomNavigationView bottomNavigationView;
+    private Fragment fragment;
 
     /**
      * Create MainActivity graphics
@@ -32,34 +33,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Default: display Home screen
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        fragment = new HomeFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         bottomNavigationView = findViewById(R.id.navigation);
-        bottomNavigationView.getMenu().getItem(0).setEnabled(false);
         // Set ItemSelectedListener for bottom navigation
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Fragment fragment = null;
                 switch (item.getItemId()) {
                     // When the user click tab Home
                     case R.id.nav_home:
+                        if (fragment instanceof HomeFragment) {
+                            break;
+                        }
                         fragment = new HomeFragment();
-                        bottomNavigationView.getMenu().getItem(0).setEnabled(false);
-                        bottomNavigationView.getMenu().getItem(1).setEnabled(true);
+                        fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
                         break;
                     // When the user click tab About
                     case R.id.nav_about:
+                        if (fragment instanceof AboutFragment) {
+                            break;
+                        }
                         fragment = new AboutFragment();
-                        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
-                        bottomNavigationView.getMenu().getItem(1).setEnabled(false);
+                        fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
                         break;
                     default:
                         //DO NOTHING
                         break;
                 }
-                fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
                 return true;
             }
         });

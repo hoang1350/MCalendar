@@ -22,7 +22,6 @@
         <activity android:name=".activity.MainActivity">
         </activity>
         <activity android:name=".activity.AppDescriptionActivity" />
-        <activity android:name=".fragment.AboutFragment" />
         <activity android:name=".activity.AddEventActivity" />
         <receiver android:name=".receiver.NotificationReceiver" />
 
