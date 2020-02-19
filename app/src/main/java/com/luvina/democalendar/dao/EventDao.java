@@ -34,7 +34,7 @@ public class EventDao extends SQLiteOpenHelper {
     }
 
     /**
-     * Create a table "event" in DB
+     * Create a table "event" in database
      *
      * @param db: object SQLiteDatabase
      * @throws SQLException
