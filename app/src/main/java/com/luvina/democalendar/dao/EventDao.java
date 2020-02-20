@@ -22,6 +22,7 @@ public class EventDao extends SQLiteOpenHelper {
     private static final String DB_NAME = "event.database";
     // Declare the version of DB
     private static final int VERSION = 1;
+    private static EventDao eventDao;
 
     /**
      * Create a database
@@ -29,8 +30,15 @@ public class EventDao extends SQLiteOpenHelper {
      * @param context: context
      * @author HoangNN
      */
-    public EventDao(Context context) {
+    private EventDao(Context context) {
         super(context, DB_NAME, null, VERSION);
+    }
+
+    public static EventDao getInstance(Context context) {
+        if (eventDao == null) {
+            eventDao = new EventDao(context);
+        }
+        return eventDao;
     }
 
     /**

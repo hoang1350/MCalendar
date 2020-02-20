@@ -21,7 +21,6 @@ import com.luvina.democalendar.activity.AppDescriptionActivity;
  */
 public class AboutFragment extends Fragment implements View.OnClickListener {
     // Declare view controls of the fragment
-    private View view;
     private Button btnExport, btnAbout;
 
     /**
@@ -36,8 +35,8 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_about, container, false);
-        initView();
+        View view = inflater.inflate(R.layout.fragment_about, container, false);
+        initView(view);
         addButtonEvent();
         return view;
     }
@@ -74,7 +73,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
      *
      * @author HoangNN
      */
-    private void initView() {
+    private void initView(View view) {
         btnExport = view.findViewById(R.id.btnExport);
         btnAbout = view.findViewById(R.id.btnDescription);
     }

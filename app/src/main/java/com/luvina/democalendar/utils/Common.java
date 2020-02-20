@@ -1,11 +1,6 @@
 package com.luvina.democalendar.utils;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
-import android.widget.SpinnerAdapter;
-
-import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -304,4 +299,7 @@ public class Common {
         return timeInMillis;
     }
 
+    public static int getDisplayCurrentMonth() {
+        return Calendar.getInstance().get(Calendar.MONTH) + 1;
+    }
 }

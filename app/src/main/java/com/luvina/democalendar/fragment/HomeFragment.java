@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.luvina.democalendar.R;
 import com.luvina.democalendar.activity.AddEventActivity;
-import com.luvina.democalendar.adapter.CustomAdapter;
 import com.luvina.democalendar.adapter.EventRecyclerAdapter;
 import com.luvina.democalendar.dao.EventDao;
 import com.luvina.democalendar.model.EventModel;
@@ -31,7 +28,6 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -40,8 +36,7 @@ import java.util.List;
  */
 public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnItemClickedListener, View.OnClickListener {
     // Declare the object to access to DB
-    public static EventDao eventDao;
-    private View view;
+    private EventDao eventDao;
     // Declare view controls of the fragment
     private EventRecyclerAdapter eventRecyclerAdapter;
     private RecyclerView recyclerView;
@@ -64,8 +59,8 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_home, container, false);
-        initView();
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        init(view);
         addEvents();
         actionToday();
         return view;
@@ -121,23 +116,20 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
      *
      * @author HoangNN
      */
-    private void initView() {
+    private void init(View view) {
         btnToday = view.findViewById(R.id.btnToday);
         btnAdd = view.findViewById(R.id.btnAdd);
         calendarView = view.findViewById(R.id.calendarView);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        eventDao = new EventDao(getActivity());
+        recyclerView = view.findViewById(R.id.recyclerV);
+        eventDao = EventDao.getInstance(getActivity());
         listEvent = new ArrayList<>();
         eventRecyclerAdapter = new EventRecyclerAdapter(this, listEvent);
         recyclerView.setAdapter(eventRecyclerAdapter);
 
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration dividerItemDecoration1 = new DividerItemDecoration(recyclerView.getContext(), GridLayoutManager.HORIZONTAL);
-        DividerItemDecoration dividerItemDecoration2 = new DividerItemDecoration(recyclerView.getContext(), GridLayoutManager.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration1);
-        recyclerView.addItemDecoration(dividerItemDecoration2);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), LinearLayoutManager.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setLayoutManager(linearLayoutManager);
     }
 
     /**
@@ -146,7 +138,7 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
      * @param date: the selected date
      * @author HoangNN
      */
-    private void loadData(Date date) {
+    private void getListEvent(Date date) {
         // Convert date to String
         String dateStr = Common.convertDateToStr(date);
         // Get list event from Database
@@ -213,7 +205,7 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
         calendarView.setCurrentDate(CalendarDay.from(year, month, day));
         calendarView.setSelectedDate(CalendarDay.from(year, month, day));
         // Display list event
-        loadData(dateSelected.getDate());
+        getListEvent(dateSelected.getDate());
     }
 
     /**
@@ -229,7 +221,7 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
                 // If the month contains the date selected before
                 if (date.getYear() == dateSelected.getYear() && date.getMonth() == dateSelected.getMonth()) {
                     // Display list event for date selected
-                    loadData(dateSelected.getDate());
+                    getListEvent(dateSelected.getDate());
                     // If the month doesn't contain the date selected before
                 } else {
                     // Clear list view
@@ -243,7 +235,7 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 dateSelected = date;
-                loadData(date.getDate());
+                getListEvent(date.getDate());
             }
         });
     }

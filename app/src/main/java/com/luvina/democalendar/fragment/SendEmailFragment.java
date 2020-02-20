@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.luvina.democalendar.R;
+import com.luvina.democalendar.dao.EventDao;
 import com.luvina.democalendar.model.EventModel;
 
 import java.io.File;
@@ -135,7 +136,7 @@ public class SendEmailFragment extends Fragment {
                 // Initialize a FileOutputStream
                 FileOutputStream fileOutputStream = new FileOutputStream(file, false);
                 // Get list event in database
-                List<EventModel> listEvent = HomeFragment.eventDao.getListEvent();
+                List<EventModel> listEvent = EventDao.getInstance(getActivity()).getListEvent();
                 // Loop the list and write each event to file
                 for (EventModel event : listEvent) {
                     String line = event.getId() + " / " + event.getName() + " / " + event.getStartDate() + " / " + event.getEndDate() +

@@ -31,7 +31,7 @@
             android:gravity="center"
             android:text="Memo Calendar"
             android:textColor="@color/colorWhite"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btnAdd"
@@ -53,7 +53,7 @@
         app:mcv_tileHeight="35dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

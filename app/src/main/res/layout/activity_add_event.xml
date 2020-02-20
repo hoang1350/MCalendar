@@ -1,306 +1,257 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activity.AddEventActivity">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorBlue">
-
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:textAllCaps="false"
-            android:text="@string/cancel" />
-
-        <TextView
-            android:id="@+id/titleContent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/new_event"
-            android:layout_centerInParent="true"
-            android:textColor="@color/colorWhite"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/btnAddEdit"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:textAllCaps="false"
-            android:text="@string/add_event" />
-    </RelativeLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintTitle"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/title"
-            android:textSize="@dimen/text_size_15"
-            app:layout_constraintEnd_toStartOf="@+id/editTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/editTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/border"
-            android:hint="Play games"
-            android:paddingLeft="5dp"
-            android:maxLines="1"
-            android:minWidth="220dp"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="22dp"
-            android:text="@string/location"
-            android:textSize="@dimen/text_size_15"
-            app:layout_constraintEnd_toStartOf="@+id/myMap"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <fragment
-            android:id="@+id/myMap"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="220dp"
-            android:layout_height="wrap_content"
-            android:minHeight="150dp"
-            android:layout_marginStart="22dp"
-            app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="8dp">
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="5dp"
-            android:text="Start"
-            android:textSize="@dimen/text_size_15"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Spinner
-            android:id="@+id/startHour"
-            android:layout_width="wrap_content"
-            android:minWidth="80dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="46dp"
-            app:layout_constraintEnd_toStartOf="@+id/startMinute"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/startDate"
-            android:layout_width="110dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:background="@drawable/border"
-            android:enabled="false"
-            android:paddingLeft="4dp"
-            android:textColor="@drawable/text_disable"
-            app:layout_constraintEnd_toStartOf="@+id/calendarStart"
-            app:layout_constraintStart_toEndOf="@+id/startMinute"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/calendarStart"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/border"
-            android:src="@drawable/calendar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/startDate"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Spinner
-            android:id="@+id/startMinute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="5dp"
-            android:minWidth="80dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/startDate"
-            app:layout_constraintStart_toEndOf="@+id/startHour"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="0dp">
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:text="End"
-            android:textSize="@dimen/text_size_15"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Spinner
-            android:id="@+id/endHour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="46dp"
-            android:minWidth="80dp"
-            app:layout_constraintEnd_toStartOf="@+id/endMinute"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Spinner
-            android:id="@+id/endMinute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="15dp"
-            android:minWidth="80dp"
-            app:layout_constraintEnd_toStartOf="@+id/endDate"
-            app:layout_constraintStart_toEndOf="@+id/endHour"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/endDate"
-            android:layout_width="110dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:background="@drawable/border"
-            android:enabled="false"
-            android:paddingLeft="4dp"
-            android:textColor="@drawable/text_disable"
-            app:layout_constraintEnd_toStartOf="@+id/calendarEnd"
-            app:layout_constraintStart_toEndOf="@+id/endMinute"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/calendarEnd"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/border"
-            android:src="@drawable/calendar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/endDate"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    android:fillViewport="true"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/margin_10dp"
-            android:text="@string/alert_notification"
-            android:textSize="@dimen/text_size_15" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-        <Switch
-            android:id="@+id/notify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="10dp"
-            android:checked="true"
-            android:theme="@style/Switch" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:maxWidth="40dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/margin_10dp"
-            android:text="@string/note"
-            android:textSize="@dimen/text_size_15" />
-
-        <EditText
-            android:id="@+id/note"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/border"
-            android:gravity="top"
-            android:hint="Note....."
-            android:inputType="textMultiLine"
-            android:padding="5dp"
-            android:textSize="@dimen/text_size_15" />
-    </LinearLayout>
+            android:layout_height="50dp"
+            android:background="@color/colorBlue">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="@string/cancel"
+                android:textAllCaps="false" />
+
+            <TextView
+                android:id="@+id/titleContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/new_event"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnAddEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="@string/add_event"
+                android:textAllCaps="false" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:weightSum="5">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="@string/title"
+                android:textSize="@dimen/text_size_15" />
+
+            <EditText
+                android:id="@+id/editTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:background="@drawable/border"
+                android:hint="Play games"
+                android:maxLines="1"
+                android:paddingLeft="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="5">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="@string/location"
+                android:textSize="@dimen/text_size_15" />
+
+            <fragment
+                android:id="@+id/myMap"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_weight="3" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="Start"
+                android:textSize="@dimen/text_size_15" />
+
+            <Spinner
+                android:id="@+id/startHour"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5" />
+
+            <Spinner
+                android:id="@+id/startMinute"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5" />
+
+            <EditText
+                android:id="@+id/startDate"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:background="@drawable/border"
+                android:enabled="false"
+                android:paddingLeft="4dp"
+                android:textColor="@drawable/text_disable" />
+
+            <ImageView
+                android:id="@+id/calendarStart"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/border"
+                android:src="@drawable/calendar" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="3dp"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="End"
+                android:textSize="@dimen/text_size_15" />
+
+            <Spinner
+                android:id="@+id/endHour"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5" />
+
+            <Spinner
+                android:id="@+id/endMinute"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5" />
+
+            <EditText
+                android:id="@+id/endDate"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:background="@drawable/border"
+                android:enabled="false"
+                android:paddingLeft="4dp"
+                android:textColor="@drawable/text_disable" />
+
+            <ImageView
+                android:id="@+id/calendarEnd"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/border"
+                android:src="@drawable/calendar" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:text="@string/alert_notification"
+                android:textSize="@dimen/text_size_15" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Switch
+                android:id="@+id/notify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:checked="true"
+                android:theme="@style/Switch" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:maxWidth="40dp"
+                android:text="@string/note"
+                android:textSize="@dimen/text_size_15" />
+
+            <EditText
+                android:id="@+id/note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/border"
+                android:gravity="top"
+                android:hint="Note....."
+                android:inputType="textMultiLine"
+                android:padding="5dp"
+                android:textSize="@dimen/text_size_15" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/imageChoose"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:src="@drawable/thumbnail" />
-    </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

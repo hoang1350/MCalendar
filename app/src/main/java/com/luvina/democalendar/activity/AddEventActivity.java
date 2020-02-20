@@ -29,9 +29,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.luvina.democalendar.dao.EventDao;
 import com.luvina.democalendar.fragment.DatePickerFragment;
 import com.luvina.democalendar.R;
-import com.luvina.democalendar.fragment.HomeFragment;
 import com.luvina.democalendar.logic.EventLogic;
 import com.luvina.democalendar.model.EventModel;
 import com.luvina.democalendar.receiver.NotificationReceiver;
@@ -149,10 +149,10 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
                 event.setStartDate(Common.convertToDateTimeStr(editStartDate.getText().toString() + " " + spinnerStartHour.getSelectedItemPosition() + ":" + spinnerStartMinute.getSelectedItemPosition()));
                 event.setEndDate(Common.convertToDateTimeStr(editEndDate.getText().toString() + " " + spinnerEndHour.getSelectedItemPosition() + ":" + spinnerEndMinute.getSelectedItemPosition()));
                 // Validate the input data from user
-                List<String> listError = eventLogic.validate(event);
+                String errorMessage = eventLogic.getErrorMessage(event);
                 // If invalid
-                if (!listError.isEmpty()) {
-                    Toast.makeText(AddEventActivity.this, "Error: " + listError.get(0), Toast.LENGTH_SHORT).show();
+                if (!errorMessage.isEmpty()) {
+                    Toast.makeText(AddEventActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
                     // If valid
                 } else {
                     // Case Add
@@ -219,21 +219,31 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
                 spinnerEndMinute.setSelection(currentMinute);
                 // Display default value for text field startDate and endDate
                 int year = Common.getCurrentYear();
-                int month = Common.getCurrentMonth();
+                int month = Common.getDisplayCurrentMonth();
                 int day = Common.getPresentDay();
-                editStartDate.setText(Common.convertToDate(year, month + 1, day));
-                editEndDate.setText(Common.convertToDate(year, month + 1, day));
+                editStartDate.setText(Common.convertToDate(year, month, day));
+                editEndDate.setText(Common.convertToDate(year, month, day));
                 break;
             // Case Edit, Detail: click a particular item on list view from Home screen
             case Constant.EDIT:
                 fillData();
-                btnAddEdit.setText("Update Event");
-                title.setText("Edit Event");
+                btnAddEdit.setText(R.string.update_event);
+                title.setText(R.string.edit_event);
                 break;
             case Constant.DETAIL:
                 fillData();
                 btnAddEdit.setVisibility(View.INVISIBLE);
-                title.setText("Detail");
+                title.setText(R.string.detail);
+                editTitle.setEnabled(false);
+                spinnerStartHour.setEnabled(false);
+                spinnerStartMinute.setEnabled(false);
+                spinnerEndHour.setEnabled(false);
+                spinnerEndMinute.setEnabled(false);
+                calendarStart.setEnabled(false);
+                calendarEnd.setEnabled(false);
+                switchNotify.setEnabled(false);
+                editNote.setEnabled(false);
+                imageChoose.setEnabled(false);
                 break;
             default:
                 //DO NOTHING
@@ -265,8 +275,11 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
         switchNotify.setChecked(Common.getNotifyBoolean(event.getNotify()));
         editNote.setText(event.getNote());
         // Display imageView
-        Uri savedImageURI = Uri.parse(event.getImage());
-        imageChoose.setImageURI(savedImageURI);
+        File file = new File(event.getImage());
+        if (file.exists()) {
+            Uri savedImageURI = Uri.parse(event.getImage());
+            imageChoose.setImageURI(savedImageURI);
+        }
     }
 
     /**
@@ -370,11 +383,11 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
      * @param event: object EventModel
      * @author HoangNN
      */
-    private void updateEvent(EventModel event) {
+    private void updateEvent(final EventModel event) {
         // Set eventId
         event.setId(eventId);
         // Check if the time is conflict
-        boolean isConflict = eventLogic.checkTimeEvent(event);
+        boolean isConflict = eventLogic.checkTimeEvent(event, this);
         // If not conflict
         if (!isConflict) {
             // Call updateEventToDatabase()
@@ -389,29 +402,7 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // Initialize an event and set value for it
-                    EventModel event = new EventModel();
-                    event.setId(eventId);
-                    event.setName(editTitle.getText().toString().trim());
-                    event.setStartDate(Common.convertToDateTimeStr(editStartDate.getText().toString() + " " + spinnerStartHour.getSelectedItemPosition() + ":" + spinnerStartMinute.getSelectedItemPosition()));
-                    event.setEndDate(Common.convertToDateTimeStr(editEndDate.getText().toString() + " " + spinnerEndHour.getSelectedItemPosition() + ":" + spinnerEndMinute.getSelectedItemPosition()));
-                    event.setNote(editNote.getText().toString());
-                    event.setNotify(Common.getNotifyInt(switchNotify.isChecked()));
-                    saveImageToFile(event);
-                    // Update event to DB
-                    boolean isSucceeded = HomeFragment.eventDao.updateEvent(event);
-                    // If succeeded
-                    if (isSucceeded) {
-                        Toast.makeText(AddEventActivity.this, "Update successfully", Toast.LENGTH_LONG).show();
-                        // set notification for event
-                        setNotificationForUpdatedEvent(event);
-                        // If not succeeded
-                    } else {
-                        Toast.makeText(AddEventActivity.this, "Update failed", Toast.LENGTH_LONG).show();
-                    }
-                    // Change the activity to Main activity
-                    startActivity(new Intent(AddEventActivity.this, MainActivity.class));
-                    finish();
+                    updateEventToDatabase(event);
                 }
             });
             // setNegativeButton
@@ -431,7 +422,7 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
         event.setNotify(Common.getNotifyInt(switchNotify.isChecked()));
         saveImageToFile(event);
         // Update event to DB
-        boolean isSucceeded = HomeFragment.eventDao.updateEvent(event);
+        boolean isSucceeded = EventDao.getInstance(AddEventActivity.this).updateEvent(event);
         // If succeeded
         if (isSucceeded) {
             Toast.makeText(AddEventActivity.this, "Update successfully", Toast.LENGTH_LONG).show();
@@ -478,9 +469,9 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
      * @param event: object EventModel
      * @author HoangNN
      */
-    private void createEvent(EventModel event) {
+    private void createEvent(final EventModel event) {
         // Check if the time is conflict
-        boolean isConflict = eventLogic.checkTimeEvent(event);
+        boolean isConflict = eventLogic.checkTimeEvent(event, this);
         // If not conflict
         if (!isConflict) {
             // Call addEventToDatabase()
@@ -495,31 +486,7 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // Initialize an event and set value for it
-                    EventModel event = new EventModel();
-                    event.setName(editTitle.getText().toString().trim());
-                    event.setStartDate(Common.convertToDateTimeStr(editStartDate.getText().toString() + " " + spinnerStartHour.getSelectedItemPosition() + ":" + spinnerStartMinute.getSelectedItemPosition()));
-                    event.setEndDate(Common.convertToDateTimeStr(editEndDate.getText().toString() + " " + spinnerEndHour.getSelectedItemPosition() + ":" + spinnerEndMinute.getSelectedItemPosition()));
-                    event.setNote(editNote.getText().toString());
-                    event.setNotify(Common.getNotifyInt(switchNotify.isChecked()));
-                    saveImageToFile(event);
-                    // Add event to database
-                    int id = HomeFragment.eventDao.addEvent(event);
-                    // If id > 0
-                    if (id > 0) {
-                        Toast.makeText(AddEventActivity.this, "Create successfully", Toast.LENGTH_LONG).show();
-                        // If switch is checked
-                        if (switchNotify.isChecked()) {
-                            // add notification for the event
-                            addNotification(id, event.getStartDate(), event.getEndDate(), event.getName());
-                        }
-                        // If id < 0
-                    } else {
-                        Toast.makeText(AddEventActivity.this, "Create failed", Toast.LENGTH_LONG).show();
-                    }
-                    // Change the activity to Main activity
-                    startActivity(new Intent(AddEventActivity.this, MainActivity.class));
-                    finish();
+                    addEventToDatabase(event);
                 }
             });
             // setNegativeButton
@@ -540,7 +507,7 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
         // Create a file to save the image
         saveImageToFile(event);
         // Add event to database
-        int id = HomeFragment.eventDao.addEvent(event);
+        int id = EventDao.getInstance(AddEventActivity.this).addEvent(event);
         // If id > 0
         if (id > 0) {
             Toast.makeText(AddEventActivity.this, "Create successfully", Toast.LENGTH_LONG).show();
@@ -568,7 +535,7 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             outputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Toast.makeText(this, "Failed to save image!", Toast.LENGTH_SHORT).show();
         }
     }
 

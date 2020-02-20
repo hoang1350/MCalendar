@@ -4,14 +4,18 @@
     <string name="pick_image">"Where would you like to choose your image from?"</string>
     <string name="welcome">Copy right 2016 by (C) Luvina JSC</string>
     <string name="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharatra nec, mattis ac neque. Duis vilputate commodo lectus, ac blandit elit tincidunt it. Sed rhoncus, tortor sed eleifend tristique, tortor mauris molestle elit, et lacinia ipsum quam nec dui. Quisque nec maruis sit amet slit laculls pretium sit amet quis magna. Aenean velit odio, elementum in tempus ut, vehicular eu diam. Pelletesque rhoncus aliquam mattis. Ut vulputate eros sed fells sodales nec vulputate justo hendreit. Vivamus varius pretium ligula, a aliquam odio euismod sit amet. Quisque laoreet sem sit amet orci ullamcorper at ultricies metus viverra. Pellentesque arce mauris, malesuada quis ornare accumsan, blandit sed diam.</string>
-    <string name="today">Today</string>
-    <string name="add_event">+Add event</string>
     <string name="cancel">Cancel</string>
     <string name="new_event">New Event</string>
+    <string name="add_event">+Add event</string>
     <string name="title">Title</string>
     <string name="location">Location</string>
     <string name="alert_notification">Alert notification</string>
     <string name="note">Note</string>
+    <string name="today">Today</string>
+    <string name="update_event">Update Event</string>
+    <string name="edit_event">Edit Event</string>
+    <string name="detail">Detail</string>
+
     <string-array name="array_image">
         <item>Camera</item>
         <item>Album</item>
