@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -244,6 +245,8 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
                 switchNotify.setEnabled(false);
                 editNote.setEnabled(false);
                 imageChoose.setEnabled(false);
+                editStartDate.setTextColor(Color.GRAY);
+                editEndDate.setTextColor(Color.GRAY);
                 break;
             default:
                 //DO NOTHING
