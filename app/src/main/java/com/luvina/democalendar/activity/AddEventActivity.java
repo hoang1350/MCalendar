@@ -245,8 +245,8 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
                 switchNotify.setEnabled(false);
                 editNote.setEnabled(false);
                 imageChoose.setEnabled(false);
-                editStartDate.setTextColor(Color.parseColor("#9e9e9e"));
-                editEndDate.setTextColor(Color.parseColor("#9e9e9e"));
+                editStartDate.setTextColor(Color.LTGRAY);
+                editEndDate.setTextColor(Color.LTGRAY);
                 break;
             default:
                 //DO NOTHING
