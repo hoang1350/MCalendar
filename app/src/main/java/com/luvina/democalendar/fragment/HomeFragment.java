@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CalendarView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -23,11 +25,14 @@ import com.luvina.democalendar.model.EventModel;
 import com.luvina.democalendar.utils.Common;
 import com.luvina.democalendar.utils.Constant;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -228,6 +233,28 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
                     listEvent.clear();
                     eventRecyclerAdapter.notifyDataSetChanged();
                 }
+//                if(date.getYear()==Calendar.getInstance().get(Calendar.YEAR)&&date.getMonth()==Calendar.getInstance().get(Calendar.MONTH)){
+//                    calendarView.addDecorator(new DayViewDecorator() {
+////                        @Override
+////                        public boolean shouldDecorate(CalendarDay day) {
+////                            Calendar cal1 = day.getCalendar();
+////                            Calendar cal2 = Calendar.getInstance();
+////
+////                            return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA)
+////                                    && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
+////                                    && cal1.get(Calendar.DAY_OF_YEAR) ==
+////                                    cal2.get(Calendar.DAY_OF_YEAR));
+////                        }
+////                        @Override
+////                        public void decorate(DayViewFacade view) {
+////                            view.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.selector));
+////                        }
+////                    });
+//                    int year = Common.getCurrentYear();
+//                    int month = Common.getCurrentMonth();
+//                    int day = Common.getPresentDay();
+//                    calendarView.setSelectedDate(CalendarDay.from(year, month, day));
+//                }
             }
         });
         // setOnDateChangedListener
@@ -238,6 +265,9 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
                 getListEvent(date.getDate());
             }
         });
+        calendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader);
+        calendarView.setDateTextAppearance(R.style.CalendarWidgetDate);
+        calendarView.setWeekDayTextAppearance(R.style.CalendarWidgetWeek);
     }
 
 }

@@ -12,6 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:maxLength="14"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:padding="5dp"
         android:text="Event"
         android:textSize="@dimen/text_size_20" />

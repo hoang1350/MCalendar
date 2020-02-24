@@ -21,4 +21,16 @@
         <item name="android:textColor">#fff</item>
     </style>
 
+    <style name="CalendarWidgetHeader">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="CalendarWidgetWeek">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="CalendarWidgetDate">
+        <item name="android:textSize">15sp</item>
+    </style>
+
 </resources>
