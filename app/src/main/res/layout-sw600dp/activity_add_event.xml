@@ -71,6 +71,7 @@
                 android:layout_weight="3"
                 android:background="@drawable/border"
                 android:hint="Play games"
+                android:textSize="@dimen/text_size_14"
                 android:maxLines="1"
                 android:paddingLeft="@dimen/density_pixel_5" />
         </LinearLayout>
@@ -115,13 +116,13 @@
             <Spinner
                 android:id="@+id/startHour"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/density_pixel_25"
                 android:layout_weight="2.5" />
 
             <Spinner
                 android:id="@+id/startMinute"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/density_pixel_25"
                 android:layout_weight="2.5" />
 
             <EditText
@@ -132,6 +133,7 @@
                 android:layout_weight="3"
                 android:background="@drawable/border"
                 android:enabled="false"
+                android:textSize="@dimen/text_size_14"
                 android:paddingLeft="@dimen/density_pixel_5"
                 android:textColor="@drawable/text_disable" />
 
@@ -163,13 +165,13 @@
             <Spinner
                 android:id="@+id/endHour"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/density_pixel_25"
                 android:layout_weight="2.5" />
 
             <Spinner
                 android:id="@+id/endMinute"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/density_pixel_25"
                 android:layout_weight="2.5" />
 
             <EditText
@@ -180,6 +182,7 @@
                 android:layout_weight="3"
                 android:background="@drawable/border"
                 android:enabled="false"
+                android:textSize="@dimen/text_size_14"
                 android:paddingLeft="@dimen/density_pixel_5"
                 android:textColor="@drawable/text_disable" />
 
@@ -212,8 +215,8 @@
 
             <Switch
                 android:id="@+id/notify"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/density_pixel_40"
+                android:layout_height="@dimen/density_pixel_40"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/density_pixel_10"
                 android:checked="true"
@@ -229,7 +232,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/density_pixel_5"
-                android:maxWidth="40dp"
+                android:maxWidth="70dp"
                 android:text="@string/note"
                 android:textSize="@dimen/text_size_14" />
 

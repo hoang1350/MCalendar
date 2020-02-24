@@ -190,8 +190,8 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
     private void getValueSpinner() {
         List<String> listHour = Common.getListHour();
         List<String> listMinute = Common.getListMinute();
-        ArrayAdapter<String> adapterHour = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, listHour);
-        ArrayAdapter<String> adapterMinute = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, listMinute);
+        ArrayAdapter<String> adapterHour = new ArrayAdapter<String>(this, R.layout.spinner_item, listHour);
+        ArrayAdapter<String> adapterMinute = new ArrayAdapter<String>(this, R.layout.spinner_item, listMinute);
         spinnerStartHour.setAdapter(adapterHour);
         spinnerStartMinute.setAdapter(adapterMinute);
         spinnerEndHour.setAdapter(adapterHour);

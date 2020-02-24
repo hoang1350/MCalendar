@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <dimen name="text_size_15">15sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
     <dimen name="text_size_20">20sp</dimen>
     <dimen name="design_bottom_navigation_text_size" tools:override="true">14sp</dimen>
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">15sp</dimen>
+    <dimen name="density_pixel_50">50dp</dimen>
+    <dimen name="density_pixel_10">10dp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="density_pixel_30">30dp</dimen>
+    <dimen name="density_pixel_5">5dp</dimen>
+    <dimen name="density_pixel_150">150dp</dimen>
+    <dimen name="density_pixel_25">25dp</dimen>
+    <dimen name="density_pixel_3">3dp</dimen>
+    <dimen name="density_pixel_40">40dp</dimen>
+    <dimen name="density_pixel_120">120dp</dimen>
+    <dimen name="density_pixel_20">20dp</dimen>
+    <dimen name="density_pixel_200">200dp</dimen>
+    <dimen name="text_size_15">15dp</dimen>
 </resources>
