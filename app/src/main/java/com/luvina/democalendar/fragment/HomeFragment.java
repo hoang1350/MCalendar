@@ -1,6 +1,8 @@
 package com.luvina.democalendar.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.luvina.democalendar.R;
 import com.luvina.democalendar.activity.AddEventActivity;
+import com.luvina.democalendar.activity.CurrentDateDecorator;
 import com.luvina.democalendar.adapter.EventRecyclerAdapter;
 import com.luvina.democalendar.dao.EventDao;
 import com.luvina.democalendar.model.EventModel;
@@ -30,11 +33,14 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Class handling Home screen
@@ -133,6 +139,7 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), LinearLayoutManager.VERTICAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider));
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setLayoutManager(linearLayoutManager);
     }
@@ -222,7 +229,7 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
         // setOnMonthChangedListener
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
-            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+            public void onMonthChanged(MaterialCalendarView widget, final CalendarDay date) {
                 // If the month contains the date selected before
                 if (date.getYear() == dateSelected.getYear() && date.getMonth() == dateSelected.getMonth()) {
                     // Display list event for date selected
@@ -233,41 +240,16 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
                     listEvent.clear();
                     eventRecyclerAdapter.notifyDataSetChanged();
                 }
-//                if(date.getYear()==Calendar.getInstance().get(Calendar.YEAR)&&date.getMonth()==Calendar.getInstance().get(Calendar.MONTH)){
-//                    calendarView.addDecorator(new DayViewDecorator() {
-////                        @Override
-////                        public boolean shouldDecorate(CalendarDay day) {
-////                            Calendar cal1 = day.getCalendar();
-////                            Calendar cal2 = Calendar.getInstance();
-////
-////                            return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA)
-////                                    && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
-////                                    && cal1.get(Calendar.DAY_OF_YEAR) ==
-////                                    cal2.get(Calendar.DAY_OF_YEAR));
-////                        }
-////                        @Override
-////                        public void decorate(DayViewFacade view) {
-////                            view.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.selector));
-////                        }
-////                    });
-//                    int year = Common.getCurrentYear();
-//                    int month = Common.getCurrentMonth();
-//                    int day = Common.getPresentDay();
-//                    calendarView.setSelectedDate(CalendarDay.from(year, month, day));
-//                }
             }
         });
         // setOnDateChangedListener
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
-            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull final CalendarDay date, boolean selected) {
                 dateSelected = date;
                 getListEvent(date.getDate());
             }
         });
-        calendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader);
-        calendarView.setDateTextAppearance(R.style.CalendarWidgetDate);
-        calendarView.setWeekDayTextAppearance(R.style.CalendarWidgetWeek);
+        calendarView.addDecorator(new CurrentDateDecorator(getActivity()));
     }
-
 }
