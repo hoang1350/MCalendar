@@ -70,6 +70,7 @@
         android:layout_weight="1"
         android:background="@drawable/listview_border"
         android:scrollbarSize="10dp"
+        android:fadeScrollbars="false"
         android:scrollbarThumbVertical="@color/colorBlack"
         android:scrollbars="vertical" />
 </LinearLayout>
