@@ -21,19 +21,19 @@
                 android:id="@+id/btnToday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
                 android:text="@string/today"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
                 android:textAllCaps="false" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:layout_centerInParent="true"
                 android:text="Memo Calendar"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp" />
@@ -42,14 +42,19 @@
                 android:id="@+id/btnAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
                 android:text="@string/add_event"
                 android:textAllCaps="false" />
         </RelativeLayout>
-
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_marginRight="10dp"
+        android:text="@string/add_event"
+        android:textAllCaps="false" />
     </LinearLayout>
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
@@ -69,8 +74,9 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@drawable/listview_border"
-        android:scrollbarSize="10dp"
         android:fadeScrollbars="false"
+        android:scrollbarSize="10dp"
         android:scrollbarThumbVertical="@color/colorBlack"
         android:scrollbars="vertical" />
+
 </LinearLayout>
