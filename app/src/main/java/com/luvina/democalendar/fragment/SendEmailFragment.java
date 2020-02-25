@@ -1,16 +1,17 @@
 package com.luvina.democalendar.fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,9 +25,10 @@ import androidx.fragment.app.Fragment;
 import com.luvina.democalendar.R;
 import com.luvina.democalendar.dao.EventDao;
 import com.luvina.democalendar.model.EventModel;
+import com.opencsv.CSVWriter;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -124,41 +126,40 @@ public class SendEmailFragment extends Fragment {
      * @author HoangNN
      */
     private void attachFileAndSend(String email) {
-        File file = null;
         try {
-            File root = Environment.getExternalStorageDirectory();
-            if (root.canWrite()) {
-                // Create a directory "Event"
-                File dir = new File(root.getAbsolutePath() + "/Event");
-                dir.mkdirs();
-                // Create a file in directory "Event"
-                file = new File(dir, "Event.csv");
-                // Initialize a FileOutputStream
-                FileOutputStream fileOutputStream = new FileOutputStream(file, false);
-                // Get list event in database
-                List<EventModel> listEvent = EventDao.getInstance(getActivity()).getListEvent();
-                // Loop the list and write each event to file
-                for (EventModel event : listEvent) {
-                    String line = event.getId() + " / " + event.getName() + " / " + event.getStartDate() + " / " + event.getEndDate() +
-                            " / " + event.getNote() + " / " + event.getNotify() + " / " + event.getImage() + "\n";
-                    fileOutputStream.write(line.getBytes());
-                }
-                fileOutputStream.close();
-                // Initialize an intent to send email with an attach file
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Events");
-                Uri uri = null;
-                // If SDK version >= 24
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    uri = FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getPackageName() + ".provider", file);
-                } else {
-                    uri = Uri.fromFile(file);
-                }
-                intent.putExtra(Intent.EXTRA_STREAM, uri);
-                intent.setType("text/csv");
-                startActivity(intent);
+            String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+            String fileName = "Event.csv";
+            String filePath = baseDir + File.separator + fileName;
+            File file = new File(filePath);
+            CSVWriter writer;
+            if (file.exists() && !file.isDirectory()) {
+                FileWriter mFileWriter = new FileWriter(filePath, true);
+                writer = new CSVWriter(mFileWriter);
+            } else {
+                writer = new CSVWriter(new FileWriter(filePath));
             }
+            List<EventModel> listEvent = EventDao.getInstance(getActivity()).getListEvent();
+            for (EventModel event : listEvent) {
+                String line = event.getId() + " / " + event.getName() + " / " + event.getStartDate() + " / " + event.getEndDate() +
+                        " / " + event.getNote() + " / " + event.getNotify() + " / " + event.getImage();
+                String[] arrEventData = line.split("/");
+                writer.writeNext(arrEventData);
+            }
+            writer.close();
+            //Initialize an intent to send email with an attach file
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Events");
+            Uri uri = null;
+            // If SDK version >= 24
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                uri = FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getPackageName() + ".provider", file);
+            } else {
+                uri = Uri.fromFile(file);
+            }
+            intent.putExtra(Intent.EXTRA_STREAM, uri);
+            intent.setType("text/csv");
+            startActivity(intent);
         } catch (IOException e) {
             Toast.makeText(getActivity(), "Failed to send email!", Toast.LENGTH_SHORT).show();
         }
@@ -172,6 +173,19 @@ public class SendEmailFragment extends Fragment {
      */
     private void initView(View view) {
         editEmail = view.findViewById(R.id.editEmail);
+        editEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
         btnOK = view.findViewById(R.id.btnOK);
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

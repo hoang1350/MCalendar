@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +18,7 @@ import com.luvina.democalendar.R;
 import com.luvina.democalendar.activity.AddEventActivity;
 import com.luvina.democalendar.adapter.EventRecyclerAdapter;
 import com.luvina.democalendar.dao.EventDao;
+import com.luvina.democalendar.decorator.CurrentDateDecorator;
 import com.luvina.democalendar.model.EventModel;
 import com.luvina.democalendar.utils.Common;
 import com.luvina.democalendar.utils.Constant;
@@ -128,6 +128,7 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), LinearLayoutManager.VERTICAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divide));
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setLayoutManager(linearLayoutManager);
     }
@@ -238,6 +239,7 @@ public class HomeFragment extends Fragment implements EventRecyclerAdapter.OnIte
                 getListEvent(date.getDate());
             }
         });
+        calendarView.addDecorator(new CurrentDateDecorator(getActivity()));
     }
 
 }

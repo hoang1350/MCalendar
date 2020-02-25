@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
@@ -21,6 +22,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -590,9 +592,25 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
     private void initView() {
         title = findViewById(R.id.titleContent);
         editTitle = findViewById(R.id.editTitle);
+        editTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
         editStartDate = findViewById(R.id.startDate);
         editEndDate = findViewById(R.id.endDate);
         editNote = findViewById(R.id.note);
+        editNote.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
         btnCancel = findViewById(R.id.btnCancel);
         btnAddEdit = findViewById(R.id.btnAddEdit);
         spinnerStartHour = findViewById(R.id.startHour);
@@ -604,6 +622,11 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
         imageChoose = findViewById(R.id.imageChoose);
         switchNotify = findViewById(R.id.notify);
         eventLogic = new EventLogic();
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }
