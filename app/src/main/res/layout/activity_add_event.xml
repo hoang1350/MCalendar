@@ -52,6 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
             android:weightSum="5">
 
             <TextView
@@ -66,10 +68,11 @@
             <EditText
                 android:id="@+id/editTitle"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:layout_weight="3"
                 android:background="@drawable/border"
+                android:textSize="@dimen/text_size_15"
                 android:hint="Play games"
                 android:maxLines="1"
                 android:paddingLeft="5dp" />
@@ -79,6 +82,8 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
             android:weightSum="5">
 
             <TextView
@@ -101,6 +106,8 @@
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
             android:weightSum="10">
 
             <TextView
@@ -149,6 +156,8 @@
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
             android:weightSum="10">
 
             <TextView
@@ -217,6 +226,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 android:checked="true"
+                android:focusableInTouchMode="true"
                 android:theme="@style/Switch" />
 
         </LinearLayout>
